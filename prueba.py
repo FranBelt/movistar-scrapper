@@ -69,32 +69,32 @@ def get_epg_channel(channel_code, DATA):
 
 def collecting_shows(epg_channel):
     for show in epg_channel:
-                if element['TEMPORADA'] != '':
-            segmento = element['TITULO'].split(" " + element['TEMPORADA'] + ": ")
+        if show['TEMPORADA'] != '':
+            segmento = show['TITULO'].split(" " + show['TEMPORADA'] + ": ")
             print("TITULO: %s" % segmento[0])
 
-            if len(element['TEMPORADA']) == 4:
-                print("TEMPORADA: %s" % element['TEMPORADA'][2:3])
+            if len(show['TEMPORADA']) == 4:
+                print("TEMPORADA: %s" % show['TEMPORADA'][2:3])
             else:
-                print("TEMPORADA: %s" % element['TEMPORADA'][2:4])
+                print("TEMPORADA: %s" % show['TEMPORADA'][2:4])
 
             print("EPISODIO: %s" % segmento[1])
 
         else:
-            print("TITULO: %s" % element['TITULO'])
+            print("TITULO: %s" % show['TITULO'])
 
-        print("GENERO: %s" % element['GENERO'])
-        print("INICIO: %s" % element['HORA_INICIO'])
-        print("FIN: %s" % element['HORA_FIN'])
-        print("DURACION: %i min." % element['DURACION'])
+        print("GENERO: %s" % show['GENERO'])
+        print("INICIO: %s" % show['HORA_INICIO'])
+        print("FIN: %s" % show['HORA_FIN'])
+        print("DURACION: %i min." % show['DURACION'])
 
-        if element['ESTRENO']:
+        if show['ESTRENO']:
             print("ESTRENO: Si")
         
-        print("URL: %s" % element['URL'])
+        print("URL: %s" % show['URL'])
 
         # Parsing the HTML content
-        page = requests.get(element['URL'])
+        page = requests.get(show['URL'])
         soup = BeautifulSoup(page.text, 'html.parser')
 
         # Scraping Sinopsis from URL
@@ -130,102 +130,12 @@ def collecting_shows(epg_channel):
             moral = ''
 
         print("Calificación: %s" % moral)
+        print("")
 
-# Showing all the shows
-'''print ("Grabbing EPG using the following settings: ")
-print ("Server to download from  : %s" % "movistarplus.es")
-print ("Number days of to grab   : %s" % "1")
-print ("Detailed program info    : %s" % "TEMP")
-print ("Download channel logo    : %s" % "TEMP")
-print ("Writing XMLTV file to    : %s" % "output")
-print ("Grabbing EPG for %s channels.\n" % "TEMP")
+for x in range(25, 27):
+    print("EPG DAY %i:" % x)
+    collecting_shows(get_epg_channel("FOXGE-CODE", download_epg(data_url(date1(x,4,2019),date2(x,4,2019)))))
 
-
-for grabDay in range(24, 25)
-    for element in CANAL_EVENTOS:
-        if element['TEMPORADA'] != '':
-            segmento = element['TITULO'].split(" " + element['TEMPORADA'] + ": ")
-            print("TITULO: %s" % segmento[0])
-
-            if len(element['TEMPORADA']) == 4:
-                print("TEMPORADA: %s" % element['TEMPORADA'][2:3])
-            else:
-                print("TEMPORADA: %s" % element['TEMPORADA'][2:4])
-
-            print("EPISODIO: %s" % segmento[1])
-
-        else:
-            print("TITULO: %s" % element['TITULO'])
-
-        print("GENERO: %s" % element['GENERO'])
-        print("INICIO: %s" % element['HORA_INICIO'])
-        print("FIN: %s" % element['HORA_FIN'])
-        print("DURACION: %i min." % element['DURACION'])
-
-        if element['ESTRENO']:
-            print("ESTRENO: Si")
-        
-        print("URL: %s" % element['URL'])
-
-        # Parsing the HTML content
-        page = requests.get(element['URL'])
-        soup = BeautifulSoup(page.text, 'html.parser')
-
-        # Scraping Sinopsis from URL
-        sinopsis = soup.find('div', {"class": "text show-more-height"})
-        sinopsis_content = sinopsis.find('p')
-        clear_sinopsis = str(sinopsis_content).replace('<p>', '')
-        clear_sinopsis = clear_sinopsis.replace('</p>', '')
-        print("SINOPSIS: %s" % clear_sinopsis)
-
-        # Scraping Languages and Subtitles
-        language = soup.find(string=re.compile("Idioma:"))
-        subtitles = soup.find(string=re.compile("Subtítulos:"))
-        print(language)
-        print(subtitles)
-
-        # Scraping Quality
-        content = soup.find('ul', {'class': 'list-info-movie'})
-        quality = content.findAll('li')
-        
-        if len(quality) == 1:
-            try:
-                quality_clear = re.search('alt="(.+?)" src=', str(quality)).group(1)
-            except AttributeError:
-                quality_clear = ''
-            print(quality_clear)
-        
-        # Scraping Moral
-        content = soup.find('div', {'class': 'moral'})
-
-        try:
-            moral = re.search('alt="(.+?)" src=', str(content)).group(1)
-        except AttributeError:
-            moral = ''
-
-        print("Calificación: %s" % moral)
-
-        # Trying to scrap the content info, maybe in a second version
-         # Scraping Casting Team
-        # Director
-        content = soup.find('div', {'class': 'gi lap-one-half'})
-        director = content.find('span', {'itemprop': 'name'})
-        guionistas = content.findAll('span')
-        
-        try:
-            director_clear = re.search('>(.+?)<', str(director)).group(1)
-        except AttributeError:
-            director_clear=''
-
-        print("Director: %s" % director_clear)
-        
-        guionistas = list(guionistas)
-        if len(guionistas) > 0:
-            guionistas.remove(guionistas[0])
-            print(str(guionistas))
-
-        # Casting '''
-
-    #print("Grabbing finished succesfully\n")'''
+    print("Grabbing finished succesfully\n")'''
 
 #file.close()
