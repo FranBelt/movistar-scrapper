@@ -2,6 +2,7 @@ import json
 import requests
 from bs4 import BeautifulSoup   # Scraping HTML
 import re
+import datetime
 
 # PATH
 #path = "/home/fran/Escritorio/Proyecto2/salida.txt"
